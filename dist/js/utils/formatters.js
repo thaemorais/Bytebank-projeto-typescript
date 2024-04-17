@@ -9,7 +9,7 @@ export function formatarData(data, formato) {
             month: "2-digit",
         });
     }
-    else if (formato === FormatoData.DIA_SEMANA_DD_MM_AAA) {
+    else if (formato === FormatoData.DIA_SEMANA_DD_MM_AAAA) {
         return data.toLocaleDateString("pt-br", {
             weekday: "long",
             day: "2-digit",

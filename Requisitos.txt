@@ -18,3 +18,8 @@ _________________________________________________
 * Os componentes
   - Nova Transação: deve apenas coletar as informações do form da interface e repassar os dados para o módulo Conta
   - Saldo: deve exibir informações de data de acesso e de saldo para o usuário na interface acessando esses dados do módulo Conta
+
+_________________________________________________
+
+* Criar um novo arquivo para lidar com a exibição do saldo e outro arquivo para lidar com a exibição das datas de acesso, 
+aplicando a modularização dos módulos ES6 no TypeScript.
