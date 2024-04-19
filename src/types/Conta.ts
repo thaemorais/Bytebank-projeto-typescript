@@ -1,7 +1,9 @@
 import { Transacao } from "./Transacao.js";
 import { TipoTransacao } from "./TipoTransacao.js";
+import { GrupoTransacao } from "./GrupoTransacao.js";
 
-let saldo: number = 500;
+let saldo: number = JSON.parse(localStorage.getItem("saldo")) || 0;
+
 const transacoes: Transacao[] =
 	JSON.parse(
 		localStorage.getItem("transacoes"),
@@ -22,6 +24,7 @@ function debitar(valor: number): void {
 	}
 
 	saldo -= valor;
+	localStorage.setItem("saldo", saldo.toString());
 }
 
 function depositar(valor: number): void {
@@ -30,6 +33,7 @@ function depositar(valor: number): void {
 	}
 
 	saldo += valor;
+	localStorage.setItem("saldo", saldo.toString());
 }
 
 const Conta = {
@@ -39,6 +43,32 @@ const Conta = {
 
 	getDataAcesso(): Date {
 		return new Date();
+	},
+
+	getGruposTransacoes(): GrupoTransacao[] {
+		const gruposTransacoes: GrupoTransacao[] = [];
+		const listaTransacoes: Transacao[] = structuredClone(transacoes);
+		const transacoesOrdenadas: Transacao[] = listaTransacoes.sort(
+			(t1, t2) => t2.data.getTime() - t1.data.getTime()
+		);
+		let labelAtualGrupoTransacao: string = "";
+
+		for (let transacao of transacoesOrdenadas) {
+			let labelGrupoTransacao: string = transacao.data.toLocaleDateString(
+				"pt-br",
+				{ month: "long", year: "numeric" }
+			);
+			if (labelAtualGrupoTransacao !== labelGrupoTransacao) {
+				labelAtualGrupoTransacao = labelGrupoTransacao;
+				gruposTransacoes.push({
+					label: labelGrupoTransacao,
+					transacoes: [],
+				});
+			}
+			gruposTransacoes.at(-1).transacoes.push(transacao);
+		}
+
+		return gruposTransacoes;
 	},
 
 	registrarTransacao(novaTransacao: Transacao) {
@@ -53,7 +83,7 @@ const Conta = {
 			throw new Error("Tipo de transação inválida.");
 		}
 		transacoes.push(novaTransacao);
-		console.log(novaTransacao);
+		console.log(this.getGruposTransacoes());
 		localStorage.setItem("transacoes", JSON.stringify(transacoes));
 	},
 };
