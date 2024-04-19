@@ -23,3 +23,8 @@ _________________________________________________
 
 * Criar um novo arquivo para lidar com a exibição do saldo e outro arquivo para lidar com a exibição das datas de acesso, 
 aplicando a modularização dos módulos ES6 no TypeScript.
+
+
+_________________________________________________
+
+*Criar um método na Conta que agrupe as transações por tipo e retorne um objeto com o total de cada tipo de transação.

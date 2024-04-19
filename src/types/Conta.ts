@@ -1,6 +1,7 @@
 import { Transacao } from "./Transacao.js";
 import { TipoTransacao } from "./TipoTransacao.js";
 import { GrupoTransacao } from "./GrupoTransacao.js";
+import ResumoTransacoes from "./ResumoTransacoes.js";
 
 let saldo: number = JSON.parse(localStorage.getItem("saldo")) || 0;
 
@@ -69,6 +70,32 @@ const Conta = {
 		}
 
 		return gruposTransacoes;
+	},
+
+	getResumoTransacoes(): ResumoTransacoes {
+		const resumoTransacoes: ResumoTransacoes = {
+			totalDepositos: 0,
+			totalTransferencias: 0,
+			totalPagamentosBoleto: 0,
+		};
+		const listaTransacoes: Transacao[] = structuredClone(transacoes);
+		for (let transacao of listaTransacoes) {
+			switch (transacao.tipoTransacao) {
+				case TipoTransacao.DEPOSITO:
+					resumoTransacoes.totalDepositos += transacao.valor;
+					break;
+
+				case TipoTransacao.TRANSFERENCIA:
+					resumoTransacoes.totalTransferencias += transacao.valor;
+					break;
+
+				case TipoTransacao.PAGAMENTO_BOLETO:
+					resumoTransacoes.totalPagamentosBoleto += transacao.valor;
+					break;
+			}
+		}
+		console.log(resumoTransacoes);
+		return resumoTransacoes;
 	},
 
 	registrarTransacao(novaTransacao: Transacao) {

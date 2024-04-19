@@ -48,6 +48,29 @@ const Conta = {
         }
         return gruposTransacoes;
     },
+    getResumoTransacoes() {
+        const resumoTransacoes = {
+            totalDepositos: 0,
+            totalTransferencias: 0,
+            totalPagamentosBoleto: 0,
+        };
+        const listaTransacoes = structuredClone(transacoes);
+        for (let transacao of listaTransacoes) {
+            switch (transacao.tipoTransacao) {
+                case TipoTransacao.DEPOSITO:
+                    resumoTransacoes.totalDepositos += transacao.valor;
+                    break;
+                case TipoTransacao.TRANSFERENCIA:
+                    resumoTransacoes.totalTransferencias += transacao.valor;
+                    break;
+                case TipoTransacao.PAGAMENTO_BOLETO:
+                    resumoTransacoes.totalPagamentosBoleto += transacao.valor;
+                    break;
+            }
+        }
+        console.log(resumoTransacoes);
+        return resumoTransacoes;
+    },
     registrarTransacao(novaTransacao) {
         if (novaTransacao.tipoTransacao == TipoTransacao.DEPOSITO) {
             depositar(novaTransacao.valor);
